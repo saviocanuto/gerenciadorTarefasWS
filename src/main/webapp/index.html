@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Project Ember JS</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- MENU PRINCIPAL -->
+  <script type="text/x-handlebars">
+    <div class="navbar">
+      <div class="navbar-inner">
+        {{#link-to 'index' class='brand'}}TaskManager{{/link-to}}
+        <ul class="nav">
+          <li>{{#link-to 'tarefas'}}Tarefas{{/link-to}}</li>
+          <li>{{#link-to 'about'}}Contato{{/link-to}}</li>
+        </ul>
+      </div>
+    </div>
+
+    {{outlet}}
+  </script>
+
+  <!-- COMPONENTE DE TAREFAS -->
+  <script type="text/x-handlebars" id="tarefas">
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <table class='table'>
+            <thead>
+              <tr><th>Tarefas Recentes</th></tr>
+            </thead>
+
+            <tbody>
+              {{#each model}}
+                <tr>
+                  <td>
+                    {{#link-to 'post' this}}{{nome}} <small class='muted'>by {{responsavel}}</small>{{/link-to}}
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="span9">
+          {{outlet}}
+        </div>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="tarefas/index">
+    <p class="text-warning">Por favor selecione uma tarefa...</p>
+  </script>
+
+  <!-- COMPONENTE DE UMA TAREFA -->
+  <script type="text/x-handlebars" id="post">
+
+    {{#if isEditing}}
+      {{partial 'post/edit'}}
+      <button {{action 'doneEditing'}}>Done</button>
+    {{else}}
+      <button {{action 'edit'}}>Alterar</button>
+      <button {{action 'delete'}}>Excluir</button>
+    {{/if}}
+
+    <h1>{{nome}}</h1>
+    <h2>by {{responsavel}} <small class='muted'>({{format-date date}})</small></h2>
+
+    <hr>
+
+    <div class='intro'>
+      {{format-markdown responsavel}}
+    </div>
+
+    <div class='below-the-fold'>
+      {{format-markdown nome}}
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="post/_edit">
+    <p>{{input type="text" value=nome}}</p>
+    <p>{{input type="text" value=responsavel}}</p>
+    <p>{{format-date value=prazo}}</p>
+  </script>
+
+  <script type="text/x-handlebars" id="about">
+    <div class='about'>
+      <p>Meu nome é Sávio Canuto. Eu criei esse pequeno exemplo com <a href="http://www.emberjs.com/">Ember.js</a>, um framework JavaScript para Web.</p>
+      <p>Você pode me encontrar em </br>
+        <a href="http://google.com/+saviocanuto" target="_blank"> Google+ </a> | <a href="http://br.linkedin.com/in/saviocanuto" target="_blank"> LinkedIn </a>
+      </p>
+    </div>
+  </script>
+
+  <script src="js/libs/jquery-v1.11.1.js"></script>
+  <script src="js/libs/handlebars-v1.3.0.js"></script>
+  <script src="js/libs/ember-v1.6.1.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
